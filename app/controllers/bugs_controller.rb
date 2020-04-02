@@ -1,30 +1,30 @@
 class BugsController < ApplicationController
 	before_action :set_user
-	before_action :set_user, only: [:show, :update, :destroy]
+	before_action :set_user_bug, only: [:show, :update, :destroy]
 
-	# GET /userss/:user_id/bugs
+	# GET /users/:user_id/bugs
    def index
-     json_response(@user.bugs)
+     json_response(@bugs = Bug.all)
    end
      
-   # GET /users/:user_id/bugs/:id
+   # GET /bugs/:bug_id/bugs/:id
    def show
-     json_response(@bug)
+     json_response(@bug = Bug.find(params[:id])) 
    end
      
-   # bug /users/:user_id/bugs
+   # bug /bugs/:bug_id/bugs
    def create
      @user.bugs.create!(bug_params)
      json_response(@user, :created)
    end
      
-   # PUT /users/:user_id/bugs/:id
+   # PUT /bugs/:bug_id/bugs/:id
    def update
      @bug.update(bug_params)
      head :no_content
    end
      
-   # DELETE /users/:user_id/bugs/:id
+   # DELETE /bugs/:bug_id/bugs/:id
    def destroy
      @bug.destroy
      head :no_content
@@ -33,11 +33,11 @@ class BugsController < ApplicationController
    private
      
    def bug_params
-     params.permit(:title, :article, :likes, :status)
+     params.permit(:title, :description, :issue_type, :priority, :status)
    end
      
    def set_user
-     @user = user.find(params[:user_id])
+     @user = User.find(params[:user_id])
    end
      
    def set_user_bug
